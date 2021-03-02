@@ -1,12 +1,36 @@
-import InputService from "./services/inputService.js";
+import InputService from "./services/InputService/inputService.js";
+import GlobalEnums from "./globalEnums.js";
+
+function notifyEvent(event, ...args) {
+    for (let i = 0; i < event.connections.length; i++) {
+        event.connections[i].callback(args);
+    }
+}
 
 class Guava { 
+    #services
+
     constructor() {
         this.services = {
             InputService: InputService,
         };
+
+        document.addEventListener("keydown", event => {
+            if (event.key != "Unidentified") {
+                notifyEvent(InputService.onInput, GlobalEnums.keyCode[event.key.toUpperCase()]);
+            }
+        });
+
+        document.addEventListener("keyup", event => {
+            notifyEvent(InputService.onInputEnded, GlobalEnums.keyCode[event.key.toUpperCase()]);
+        });
+        
+        //this.gameLoop();
+    }
+
+    #gameLoop() {
         setInterval(function() {
-            InputService.onInput.Notify();
+            notifyEvent(InputService.onInput, "Test");
             // handle input and notify observers
         }, 1000);
     }
