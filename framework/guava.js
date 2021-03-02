@@ -1,4 +1,10 @@
-import InputService from "./services/inputService.js";
+import InputService from "./services/InputService/inputService.js";
+
+function notifyEvent(event, ...args) {
+    for (let i = 0; i < event.connections.length; ++i) {
+        event.connections[i].callback(args);
+    }
+}
 
 class Guava { 
     constructor() {
@@ -6,7 +12,7 @@ class Guava {
             InputService: InputService,
         };
         setInterval(function() {
-            InputService.onInput.Notify();
+            notifyEvent(this.services.InputService.onInput);
             // handle input and notify observers
         }, 1000);
     }

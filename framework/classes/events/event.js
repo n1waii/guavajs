@@ -1,4 +1,4 @@
-import ConnectionObject from "connectionObject.js";
+import ConnectionObject from "./connectionObject.js";
 
 export default class Event {
     #connections;
@@ -14,11 +14,5 @@ export default class Event {
         this.connections.push(connObj);
 
         return connObj;
-    }
-
-    Notify(...args) {
-        for (let i = 0; i < this.connections.length; ++i) {
-            this.connections[i].callback(args);
-        }
     }
 }
