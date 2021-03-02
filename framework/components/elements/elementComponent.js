@@ -1,9 +1,7 @@
 export default function elementComponent(self) {
     return {
-        position: {
-            x: 0,
-            y: 0
-        },
+        x: 0,
+        y: 0
 
         backgroundColor: "white",
         border: "none";
