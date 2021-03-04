@@ -1,20 +1,29 @@
 import InputService from "./services/InputService/inputService.js";
 import GlobalEnums from "./globalEnums.js";
 
+const SERVICES = {
+    InputService: InputService,
+};
+
 function notifyEvent(event, ...args) {
     for (let i = 0; i < event.connections.length; ++i) {
         event.connections[i].callback(args);
     }
 }
 
-class Guava { 
-    #services
+function gameLoop() {
+    setInterval(function() {
+        notifyEvent(InputService.onInput, "Test");
+        notifyEvent(this.services.InputService.onInput);
+        // handle input and notify observers
+    }, 1000);
+}
 
+
+
+export default new class Guava {
     constructor() {
-        this.services = {
-            InputService: InputService,
-        };
-
+        // handling input events
         document.addEventListener("keydown", event => {
             if (event.key != "Unidentified") {
                 notifyEvent(InputService.onInput, GlobalEnums.keyCode[event.key.toUpperCase()]);
@@ -24,24 +33,9 @@ class Guava {
         document.addEventListener("keyup", event => {
             notifyEvent(InputService.onInputEnded, GlobalEnums.keyCode[event.key.toUpperCase()]);
         });
-        
-        //this.gameLoop();
-    }
-
-    #gameLoop() {
-        setInterval(function() {
-            notifyEvent(InputService.onInput, "Test");
-            notifyEvent(this.services.InputService.onInput);
-            // handle input and notify observers
-        }, 1000);
     }
 
     import(serviceName) {
-        return this.services[serviceName];
+        return SERVICES[serviceName];
     }
 };
-
-const guava = new Guava();
-//Object.freeze(guava);
-
-export default guava;

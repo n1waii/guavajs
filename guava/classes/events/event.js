@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 import { ConnectionObject } from "./connectionObject.js";
-=======
-import ConnectionObject from "./connectionObject.js";
 
-export default class Event {
-    #connections;
->>>>>>> origin/master
 
 export class Event {    
     constructor() {
