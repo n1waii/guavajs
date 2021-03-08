@@ -1,3 +1,10 @@
+import Rect from "../elements/rect.js";
+import Scene from "./scene.js";
+
+const ELEMENTS = {
+    Rect: Rect,
+}
+
 export default class World {
     #scenes
     #currentScene
@@ -9,8 +16,8 @@ export default class World {
     #y
 
     constructor(x, y, width, height) {
-        this.scenes = [];
-        this.currentScene = 1;
+        this.scenes = [new Scene(this)];
+        this.currentScene = 0;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -18,10 +25,18 @@ export default class World {
         this.canvas = document.createElement("canvas");
         this.canvas.width = width;
         this.canvas.height = height;
-        this.ctx = this.canvas.getContext("2d");  
-    },
+        this.ctx = this.canvas.getContext("2d"); 
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
-    addScene() {
+        //setInterval(this.scenes[this.currentScene].render, 10);
+    }
+
+    addScene(scene) {
+        console.assert(
+            scene.constructor.name == "Scene",
+            "Argument 1 is not a Scene object"
+        );
+        this.scenes.append(scene);
         //this.ctx.drawImage(background)
     }
 
@@ -32,5 +47,10 @@ export default class World {
         );
     }
 
+    createObject(name, props) {
+        const obj = new ELEMENTS[name](props);
+        this.scenes[this.currentScene].addObject(obj);
+        return obj;
+    }
 
-}
+};

@@ -1,5 +1,6 @@
 import InputService from "./services/InputService/inputService.js";
 import GlobalEnums from "./globalEnums.js";
+import World from "./classes/world/world.js"
 
 const SERVICES = {
     InputService: InputService,
@@ -20,7 +21,6 @@ function gameLoop() {
 }
 
 
-
 export default new class Guava {
     constructor() {
         // handling input events
@@ -33,9 +33,15 @@ export default new class Guava {
         document.addEventListener("keyup", event => {
             notifyEvent(InputService.onInputEnded, GlobalEnums.keyCode[event.key.toUpperCase()]);
         });
+
     }
 
     import(serviceName) {
         return SERVICES[serviceName];
+    }
+
+    createWorld(x, y, width, height) {
+        console.log("creating world");
+        return new World(x, y, width, height);
     }
 };
