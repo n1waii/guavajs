@@ -16,7 +16,7 @@ export default class World {
     #y
 
     constructor(x, y, width, height) {
-        this.scenes = [new Scene(this)];
+        this.scenes = [(new Scene(this))];
         this.currentScene = 0;
         this.x = x;
         this.y = y;
@@ -27,8 +27,6 @@ export default class World {
         this.canvas.height = height;
         this.ctx = this.canvas.getContext("2d"); 
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-
-        //setInterval(this.scenes[this.currentScene].render, 10);
     }
 
     addScene(scene) {

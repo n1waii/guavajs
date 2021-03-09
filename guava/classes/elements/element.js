@@ -1,6 +1,6 @@
 const CTX_PROP_MAPPINGS = {
     fillStyle: "backgroundColor",
-    strokeStyle: "borderColor"
+    strokeStyle: "borderColor",
 };
 
 export default class Element {
@@ -10,7 +10,7 @@ export default class Element {
         this.width = 50;
         this.height = 50;
         this.anchorPoint = [0, 0];
-        this.backgroundColor = "black";
+        this.backgroundColor = "red";
 
         for (const [prop, value] of Object.entries(props)) {
             this.setProperty(prop, value);
@@ -20,19 +20,20 @@ export default class Element {
     setProperty(prop, value) {
         console.assert(this[prop] !== undefined, "Property does not exist for element");
         this[prop] = value;
+        console.log(this[prop]);
         return this;
     }
 
     render(world) {
         //let scene = this.world.getScene();
         for (const [ctxProp, thisProp] of Object.entries(CTX_PROP_MAPPINGS)) {
-            let propValue = this[thisProp];
+            let propValue = this[thisProp]; 
             if (propValue) {
                 world.ctx[ctxProp] = propValue;
             }
         }
+        //console.log(this);
         world.ctx.fillRect(this.x, this.y, this.width, this.height);
-        console.log("ok");
     }
 
     clear(world) {

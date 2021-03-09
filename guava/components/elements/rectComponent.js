@@ -1,14 +1,4 @@
 const RectComponent = superclass => class extends superclass {
-    constructor(...args) {
-        super(...args);
-        this.backgroundColor = "white";
-        this.backgroundTransparency = 0;
-        this.border = "none";
-        this.borderSize = 1;
-        this.borderColor = "black";
-        this.borderRadius = 0;
-    }
-
     setBorder(b, bSize, bColor, bRadius) {
         this.border = b || this.border;
         this.borderSize = bSize || this.borderSize;
