@@ -1,6 +1,7 @@
 import InputService from "./services/InputService/inputService.js";
 import GlobalEnums from "./globalEnums.js";
-import World from "./classes/world/world.js"
+import World from "./classes/world/world.js";
+import { Vector2 } from "./classes/userdata/userdata.js"
 
 const SERVICES = {
     InputService: InputService,
@@ -8,7 +9,7 @@ const SERVICES = {
 
 function notifyEvent(event, ...args) {
     for (let i = 0; i < event.connections.length; ++i) {
-        event.connections[i].callback(args);
+        event.connections[i].callback(...args);
     }
 }
 
@@ -21,17 +22,17 @@ function gameLoop() {
 }
 
 
-export default new class Guava {
+const Guava = new class Guava {
     constructor() {
         // handling input events
         document.addEventListener("keydown", event => {
             if (event.key != "Unidentified") {
-                notifyEvent(InputService.onInput, GlobalEnums.keyCode[event.key.toUpperCase()]);
+                notifyEvent(InputService.onInput, GlobalEnums.KeyCode[event.key.toUpperCase()]);
             }
         });
 
         document.addEventListener("keyup", event => {
-            notifyEvent(InputService.onInputEnded, GlobalEnums.keyCode[event.key.toUpperCase()]);
+            notifyEvent(InputService.onInputEnded, GlobalEnums.KeyCode[event.key.toUpperCase()]);
         });
 
     }
@@ -44,4 +45,10 @@ export default new class Guava {
         console.log("creating world");
         return new World(x, y, width, height);
     }
+}
+
+export {
+    GlobalEnums as Enums,
+    Vector2,
+    Guava
 };

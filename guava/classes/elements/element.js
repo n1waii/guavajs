@@ -1,12 +1,17 @@
+import Vector2 from "../userdata/vector2.js"
+
 const CTX_PROP_MAPPINGS = {
     fillStyle: "backgroundColor",
     strokeStyle: "borderColor",
 };
 
+function clamp(number, min, max) {
+  return Math.max(min, Math.min(number, max));
+}
+
 export default class Element {
     constructor(props) {        
-        this.x = 0;
-        this.y = 0;
+        this.position = new Vector2()
         this.width = 50;
         this.height = 50;
         this.anchorPoint = [0, 0];
@@ -25,15 +30,21 @@ export default class Element {
     }
 
     render(world) {
-        //let scene = this.world.getScene();
+        let scene = world.getCurrentScene();
+
         for (const [ctxProp, thisProp] of Object.entries(CTX_PROP_MAPPINGS)) {
             let propValue = this[thisProp]; 
             if (propValue) {
                 world.ctx[ctxProp] = propValue;
             }
         }
-        //console.log(this);
-        world.ctx.fillRect(this.x, this.y, this.width, this.height);
+        
+        if (scene.isEnclosed()) {
+            this.position.x = clamp(this.position.x, 0, world.width-this.width);
+            this.position.y = clamp(this.position.y, 0, world.height-this.height);
+        }
+
+        world.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 
     clear(world) {

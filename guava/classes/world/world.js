@@ -16,7 +16,7 @@ export default class World {
     #y
 
     constructor(x, y, width, height) {
-        this.scenes = [(new Scene(this))];
+        this.scenes = [(new Scene(this, [], true))];
         this.currentScene = 0;
         this.x = x;
         this.y = y;
@@ -43,6 +43,10 @@ export default class World {
             i < this.scenes.length-1 && i > 0,
             "Scene number out of range"
         );
+    }
+
+    getCurrentScene(index) {
+        return this.scenes[this.currentScene];
     }
 
     createObject(name, props) {
