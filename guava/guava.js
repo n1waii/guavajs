@@ -1,9 +1,13 @@
 import InputService from "./services/InputService/inputService.js";
 import GlobalEnums from "./globalEnums.js";
 import World from "./classes/world/world.js"
+import RenderService from "./services/InputService/RenderService.js";
+
+let previousTime;
 
 const SERVICES = {
     InputService: InputService,
+    RenderService: RenderService
 };
 
 function notifyEvent(event, ...args) {
@@ -13,13 +17,13 @@ function notifyEvent(event, ...args) {
 }
 
 function gameLoop() {
-    setInterval(function() {
-        notifyEvent(InputService.onInput, "Test");
-        notifyEvent(this.services.InputService.onInput);
-        // handle input and notify observers
-    }, 1000);
-}
+    requestAnimationFrame(gameLoop);
 
+    let deltaTime = (Date.now() - previousTime) / 1000;
+    previousTime = Date.now();
+
+    notifyEvent(RenderService.update, deltaTime);
+}
 
 export default new class Guava {
     constructor() {
@@ -34,6 +38,10 @@ export default new class Guava {
             notifyEvent(InputService.onInputEnded, GlobalEnums.keyCode[event.key.toUpperCase()]);
         });
 
+        // initializing the game loop
+        previousTime = Date.now();
+        notifyEvent(RenderService.start);
+        gameLoop();
     }
 
     import(serviceName) {
