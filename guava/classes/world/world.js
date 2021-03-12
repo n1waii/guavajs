@@ -5,28 +5,33 @@ const ELEMENTS = {
     Rect: Rect,
 }
 
+const Worlds = [];
+
+function worldRendering() {
+    for (const world of Worlds) {
+        world.getCurrentScene().render();
+    }
+}
+
+setInterval(worldRendering, 1);
+
 export default class World {
     #scenes
     #currentScene
-    #canvas
-    #ctx
     #width
     #height
-    #x
-    #y
 
-    constructor(x, y, width, height) {
-        this.scenes = [(new Scene(this, [], true))];
-        this.currentScene = 0;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height; 
+    constructor(width, height) {
+        this.#scenes = [new Scene(this, [], true)];
+        this.#currentScene = 0;
+        this.#width = width;
+        this.#height = height; 
         this.canvas = document.createElement("canvas");
         this.canvas.width = width;
         this.canvas.height = height;
         this.ctx = this.canvas.getContext("2d"); 
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        Worlds.push(this);
     }
 
     addScene(scene) {
@@ -34,8 +39,7 @@ export default class World {
             scene.constructor.name == "Scene",
             "Argument 1 is not a Scene object"
         );
-        this.scenes.append(scene);
-        //this.ctx.drawImage(background)
+        this.#scenes.push(scene);
     }
 
     setScene(i) {
@@ -43,16 +47,16 @@ export default class World {
             i < this.scenes.length-1 && i > 0,
             "Scene number out of range"
         );
+        this.#currentScene = i;
     }
 
-    getCurrentScene(index) {
-        return this.scenes[this.currentScene];
+    getCurrentScene() {
+        return this.#scenes[this.#currentScene];
     }
 
     createObject(name, props) {
         const obj = new ELEMENTS[name](props);
-        this.scenes[this.currentScene].addObject(obj);
+        this.getCurrentScene().addObject(obj);
         return obj;
     }
-
 };

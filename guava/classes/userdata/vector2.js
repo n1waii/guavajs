@@ -25,4 +25,8 @@ export default class Vector2 {
         temp.y *= -1;
         return this.add(temp);
     }
+
+    getMagnitude(vector2) {
+        return Math.abs(Math.sqrt(vector2.x**2 + vector2.y**2));
+    }
 }

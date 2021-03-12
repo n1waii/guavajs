@@ -25,13 +25,12 @@ export default class Element {
     setProperty(prop, value) {
         console.assert(this[prop] !== undefined, "Property does not exist for element");
         this[prop] = value;
-        console.log(this[prop]);
         return this;
     }
 
     render(world) {
         let scene = world.getCurrentScene();
-
+        
         for (const [ctxProp, thisProp] of Object.entries(CTX_PROP_MAPPINGS)) {
             let propValue = this[thisProp]; 
             if (propValue) {
@@ -40,14 +39,10 @@ export default class Element {
         }
         
         if (scene.isEnclosed()) {
-            this.position.x = clamp(this.position.x, 0, world.width-this.width);
-            this.position.y = clamp(this.position.y, 0, world.height-this.height);
+            this.position.x = clamp(this.position.x, 0, world.canvas.width-this.width);
+            this.position.y = clamp(this.position.y, 0, world.canvas.height-this.height);
         }
-
+        
         world.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    }
-
-    clear(world) {
-        world.ctx.clearRect(0, 0, world.canvas.width, world.canvas.height);
     }
 }

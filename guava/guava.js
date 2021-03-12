@@ -41,9 +41,8 @@ const Guava = new class Guava {
         return SERVICES[serviceName];
     }
 
-    createWorld(x, y, width, height) {
-        console.log("creating world");
-        return new World(x, y, width, height);
+    createWorld(...args) {
+        return new World(...args);;
     }
 }
 

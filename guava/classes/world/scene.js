@@ -10,10 +10,12 @@ export default class Scene {
     }
 
     render() {
-        for (let i = 0; i < this.#objects.length; i++) {
-            let obj = this.#objects[i];
-            obj.clear(this.#world);
-            obj.render(this.#world);
+        let world = this.#world;
+
+        world.ctx.clearRect(0, 0, world.canvas.width, world.canvas.height);
+        for (const obj of this.#objects) {
+            //obj.clear(this.#world);
+            obj.render(world);
         }
     }
 
