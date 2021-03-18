@@ -9,6 +9,10 @@ export default class Scene {
         this.#hasBoundary = hasBoundary || false;
     }
 
+    getObjects() {
+        return this.#objects;
+    }
+
     render() {
         let world = this.#world;
 

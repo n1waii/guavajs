@@ -2,8 +2,9 @@ import { ConnectionObject } from "./connectionObject.js";
 
 
 export class Event {    
-    constructor() {
+    constructor(obj) {
         this.connections = [];
+        this.object = obj;
     }
 
     Connect(callback) {

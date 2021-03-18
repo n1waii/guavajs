@@ -1,4 +1,5 @@
-import Vector2 from "../userdata/vector2.js"
+import Vector2 from "../userdata/vector2.js";
+import TouchedEvent from "../events/touchedevent.js";
 
 const CTX_PROP_MAPPINGS = {
     fillStyle: "backgroundColor",
@@ -16,6 +17,7 @@ export default class Element {
         this.height = 50;
         this.anchorPoint = [0, 0];
         this.backgroundColor = "red";
+        this.onTouched = new TouchedEvent(this);
 
         for (const [prop, value] of Object.entries(props)) {
             this.setProperty(prop, value);

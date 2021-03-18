@@ -24,6 +24,10 @@ let velY = 0;
 let speed = 2;
 let keysPressed = {};
 
+player.onTouched.Connect(otherElement => {
+    console.log("hit");
+});
+
 InputService.onInput.Connect(key => {
     keysPressed[key] = true;
 });

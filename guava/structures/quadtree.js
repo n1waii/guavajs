@@ -1,9 +1,7 @@
-import Node from "./quadTreeNode.js";
-
 function Node(pos, data) {
     return {
-        pos: pos,
-        data: data
+        pos,
+        data
     }
 }
 
@@ -13,10 +11,10 @@ class Quad {
         this.bottomRight = bR || [0, 0];
         this.node = node || null;
         this.trees = {
-            topLeftTree: null;
-            topRightTree: null;
-            bottomLeftTree: null;
-            bottomRightTree: null;
+            topLeftTree: null,
+            topRightTree: null,
+            bottomLeftTree: null,
+            bottomRightTree: null
         }
     }
 
@@ -30,6 +28,7 @@ class Quad {
         && Math.abs(this.topLeft[1] - this.bottomRight[1]) <= 1) { 
             if (this.node === null) { 
                 this.node = node; 
+                console.log(node);
             }
             return; 
         } 
@@ -41,7 +40,7 @@ class Quad {
             if ((this.topLeft[1] + this.bottomRight[1]) / 2 >= node.pos[1]) { 
                 if (this.trees.topLeftTree === null) {
                     this.trees.topLeftTree = new Quad( 
-                        [this.topLeft[0], this.topLeft[1]), 
+                        [this.topLeft[0], this.topLeft[1]],
                         [
                             (this.topLeft[0] + this.bottomRight[0]) / 2, 
                             (this.topLeft[1] + this.bottomRight[1]) / 2
@@ -53,7 +52,7 @@ class Quad {
             } else {
                 if (this.trees.bottomLeftTree === null) {
                     this.trees.bottomLeftTree = new Quad( 
-                        [this.topLeft[0], (this.topLeft[1]+this.bottomRight[1])/2), 
+                        [this.topLeft[0], (this.topLeft[1]+this.bottomRight[1])/2], 
                         [
                             (this.topLeft[0] + this.bottomRight[0]) / 2, 
                             this.bottomRight[1]
@@ -68,7 +67,7 @@ class Quad {
             if ((this.topLeft[1] + this.bottomRight[1]) / 2 >= node.pos[1]) { 
                 if (this.trees.topRightTree === null) {
                     this.trees.topRightTree = new Quad( 
-                        [(this.topLeft[0]+this.bottomRight[0])/2, this.topLeft[1]), 
+                        [(this.topLeft[0]+this.bottomRight[0])/2, this.topLeft[1]], 
                         [
                             this.bottomRight[0], 
                             (this.topLeft[1] + this.bottomRight[1]) / 2
@@ -80,7 +79,7 @@ class Quad {
             } else {
                 if (this.trees.bottomRightTree === null) {
                     this.trees.bottomRightTree = new Quad( 
-                        [this.topLeft[0], (this.topLeft[1]+this.bottomRight[1])/2), 
+                        [this.topLeft[0], (this.topLeft[1]+this.bottomRight[1])/2], 
                         [
                             (this.topLeft[0] + this.bottomRight[0]) / 2, 
                             this.bottomRight[1]
@@ -123,22 +122,22 @@ class Quad {
     }
 
     clear() {
-        this.node = null;
-
-        for (tree of this.trees) {
-            if (tree !== null) return tree.clear();
+        for (const tree of Object.values(this.trees)) {
+            if (tree !== null) tree.clear();
         }
+    
+        this.node = null;
     }
 
-    getNodesInQuadrant(p, list) {
+    getNodesFromPoint(p, list) {
         list = list || [];
         const node = this.getNodeFromPoint(p);
         
         if (node !== null) list.push(node);
 
-        for (tree of this.trees) {
+        for (const tree of Object.values(this.trees)) {
             if (tree !== null) {
-                list.concat(tree.getPointsInQuadrant(p));
+                list.concat(tree.getNodesFromPoint(p));
             }
         }
 
@@ -147,10 +146,10 @@ class Quad {
 
     inBoundary(p) {
         return (
-            p[0] >= topLeft[0] && 
-            p[0] <= bottomRight[0] && 
-            p[1] >= topLeft[1] && 
-            p[1] <= bottomRight[1]
+            p[0] >= this.topLeft[0] && 
+            p[0] <= this.bottomRight[0] && 
+            p[1] >= this.topLeft[1] && 
+            p[1] <= this.bottomRight[1]
         );
     }
 };

@@ -1,7 +1,5 @@
 import Rect from "../elements/rect.js";
 import Scene from "./scene.js";
-import * as PhysicsEngine from "../../../physics.js";
-
 
 const ELEMENTS = {
     Rect: Rect,

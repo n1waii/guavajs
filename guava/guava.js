@@ -1,6 +1,7 @@
 import InputService from "./services/InputService/inputService.js";
 import GlobalEnums from "./globalEnums.js";
 import World from "./classes/world/world.js";
+import * as Physics from "./physics.js"
 import { Vector2 } from "./classes/userdata/userdata.js"
 
 const SERVICES = {
@@ -42,7 +43,12 @@ const Guava = new class Guava {
     }
 
     createWorld(...args) {
-        return new World(...args);;
+        const world = new World(...args);
+        Physics.reset(world);
+        setInterval(() => {
+            Physics.run(world);
+        }, 1);
+        return world;
     }
 }
 
