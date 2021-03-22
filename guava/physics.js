@@ -39,7 +39,7 @@ function reset(world) {
 function run(world) {
     ElementsTree = new Quad([0, 0], [world.canvas.width, world.canvas.height]);
     for (const element of world.getCurrentScene().getObjects()) {
-        ElementsTree.insert(Node([element.position.x, element.position.y], element));
+        console.log(ElementsTree.insert(Node([element.position.x, element.position.y], element)));
     }
     checkCollisions();
 }
@@ -51,7 +51,7 @@ function addCollisionListener(element) {
 }
 
 function removeCollisionListener(element) {
-    let index = CollisionListeners.indexOf()
+    let index = CollisionListeners.indexOf(element);
     if (index) {
         CollisionListeners.splice(index, 1); 
     }

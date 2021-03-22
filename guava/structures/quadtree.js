@@ -6,10 +6,10 @@ function Node(pos, data) {
 }
 
 class Quad {
-    constructor(tL, bR, node) {
+    constructor(tL, bR, ) {
         this.topLeft = tL || [0, 0];
         this.bottomRight = bR || [0, 0];
-        this.node = node || null;
+        this.node = null;
         this.trees = {
             topLeftTree: null,
             topRightTree: null,
@@ -30,7 +30,7 @@ class Quad {
                 this.node = node; 
                 console.log(node);
             }
-            return; 
+            return [this.topLeft, this.bottomRight]; 
         } 
 
         // subdivide further
@@ -47,6 +47,8 @@ class Quad {
                         ]
                     ); 
                    this.trees.topLeftTree.insert(node); 
+                   return [this.trees.topLeftTree.topLeft, this.trees.topLeftTree.bottomRight]; 
+
                 }
             // bottom left  
             } else {
@@ -59,6 +61,7 @@ class Quad {
                         ]
                     ); 
                    this.trees.bottomLeftTree.insert(node); 
+                   return [this.trees.bottomLeftTree.topLeft, this.trees.bottomLeftTree.bottomRight]; 
                 }
             }
         // right half
@@ -74,6 +77,7 @@ class Quad {
                         ]
                     ); 
                    this.trees.topRightTree.insert(node); 
+                   return [this.trees.topRightTree.topLeft, this.trees.topRightTree.bottomRight]; 
                 }
             // bottom right  
             } else {
@@ -86,12 +90,13 @@ class Quad {
                         ]
                     ); 
                    this.trees.bottomRightTree.insert(node); 
+                   return [this.trees.bottomRightTree.topLeft, this.trees.bottomRightTree.bottomRight]; 
                 }
             }
         }
     }
 
-    getNodeFromPoint(p) {
+    search(p) {
         if (!this.inBoundary(p)) return null;
         if (this.node !== null) return this.node;
 
@@ -137,7 +142,7 @@ class Quad {
 
         for (const tree of Object.values(this.trees)) {
             if (tree !== null) {
-                list.concat(tree.getNodesFromPoint(p));
+                list.concat(tree.getNodesFromPoint([tree.topLeft, tree.bottomRight]));
             }
         }
 
@@ -145,6 +150,8 @@ class Quad {
     }
 
     inBoundary(p) {
+        console.log(p)
+        console.log(this.topLeft, this.bottomRight)
         return (
             p[0] >= this.topLeft[0] && 
             p[0] <= this.bottomRight[0] && 
