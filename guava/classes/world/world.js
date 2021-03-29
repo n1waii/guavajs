@@ -18,14 +18,12 @@ setInterval(worldRendering, 1);
 export default class World {
     #scenes
     #currentScene
-    #width
-    #height
 
     constructor(width, height) {
         this.#scenes = [new Scene(this, [], true)];
         this.#currentScene = 0;
-        this.#width = width;
-        this.#height = height; 
+        this.width = width;
+        this.height = height; 
         this.canvas = document.createElement("canvas");
         this.canvas.width = width;
         this.canvas.height = height;
@@ -55,7 +53,7 @@ export default class World {
     }
 
     createObject(name, props) {
-        const obj = new ELEMENTS[name](props);
+        const obj = new ELEMENTS[name](this, props);
         this.getCurrentScene().addObject(obj);
         return obj;
     }

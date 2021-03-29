@@ -30,4 +30,11 @@ export default class Scene {
     addObject(obj) {
         this.#objects.push(obj);
     }
+
+    removeObject(obj) {
+        let index = this.#objects.indexOf(obj);
+        if (index) {
+            this.#objects.splice(index, 1); 
+        }
+    }
 };

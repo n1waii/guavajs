@@ -11,14 +11,20 @@ function clamp(number, min, max) {
 }
 
 export default class Element {
-    constructor(props) {        
+    #world
+    #events
+
+    constructor(world, props) {
+        this.#world = world;        
         this.position = new Vector2()
         this.width = 50;
         this.height = 50;
         this.anchorPoint = [0, 0];
         this.backgroundColor = "red";
+        this.name = "Element"
         this.onTouched = new TouchedEvent(this);
         this.onTouchEnded = new TouchEndedEvent(this);
+        this.#events = [this.onTouched, this.onTouchEnded]
 
         for (const [prop, value] of Object.entries(props)) {
             this.setProperty(prop, value);
@@ -48,4 +54,10 @@ export default class Element {
         
         world.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
+
+    Destroy() {
+        for (event of this.#events) {
+            event.Disconnect();
+        }
+    } 
 }

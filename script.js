@@ -1,32 +1,60 @@
 import { Guava, Enums, Vector2 } from "./guava/guava.js";
 import { Quad, Node } from "./guava/structures/quadtree.js";
 
-const World = Guava.createWorld(700, 420);
+const WIDTH = 700;
+const HEIGHT = 400;
+
+const World = Guava.createWorld(WIDTH, HEIGHT);
 const InputService = Guava.import("InputService");
 
-const player = World.createObject("Rect", {
-    position: new Vector2(30, 10),
-    width: 30,
-    height: 30,
-    backgroundColor: "red"
-});
+function createTargets() {
+    for (let i = 0; i < 7; i++) {
+        World.createObject("Rect", {
+            position: new Vector2(15+(i*100), 30),
+            width: 70,
+            height: 20,
+            name: "targetBox",
+            backgroundColor: "blue"
+        });
+    };
 
-const box = World.createObject("Rect", {
-    position: new Vector2(700/2, 420/2),
+    for (let i = 0; i < 6; i++) {
+        World.createObject("Rect", {
+            position: new Vector2(40+(i*100), 90),
+            width: 70,
+            height: 20,
+            name: "targetBox",
+            backgroundColor: "green"
+        });
+    };
+
+    for (let i = 0; i < 5; i++) {
+        World.createObject("Rect", {
+            position: new Vector2(30+(i*130), 150),
+            width: 100,
+            height: 20,
+            name: "targetBox",
+            backgroundColor: "pink"
+        });
+    }
+}
+
+createTargets();
+
+const player = World.createObject("Rect", {
+    position: new Vector2(WIDTH/2-80/2, HEIGHT-100),
     width: 80,
-    height: 80,
-    backgroundColor: "blue"
+    height: 20,
+    backgroundColor: "red"
 });
 
 let keysPressed = {};
 
 player.onTouched.Connect(otherElement => {
-    console.log("hit")
     otherElement.setProperty("backgroundColor", "green")
 });
 
 player.onTouchEnded.Connect(lastTouched => {
-    console.log("stopped hitting")
     lastTouched.setProperty("backgroundColor", "blue")
 });
 
@@ -44,15 +72,6 @@ let velX = 0;
 let velY = 0;
 let speed = 2;
 
-setInterval(function() {
-    if (player.position.x < box.position.x + box.width &&
-    player.position.x + player.width > box.position.x &&
-    player.position.y < box.position.y + box.height &&
-    player.position.y + player.height > box.position.y) {
-    } else {
-        box.setProperty("backgroundColor", "blue")
-    }
-}, 1)
 
 function updateMovement() {
     requestAnimationFrame(updateMovement);
