@@ -8,7 +8,7 @@ const SERVICES = {
     InputService: InputService,
 };
 
-function notifyEvent(event, ...args) {
+async function notifyEvent(event, ...args) {
     for (let i = 0; i < event.connections.length; ++i) {
         event.connections[i].callback(...args);
     }

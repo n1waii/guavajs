@@ -1,10 +1,11 @@
 import { Guava, Enums, Vector2 } from "./guava/guava.js";
-
-const InputService = Guava.import("InputService");
+import { Quad, Node } from "./guava/structures/quadtree.js";
 
 const World = Guava.createWorld(700, 420);
+const InputService = Guava.import("InputService");
+
 const player = World.createObject("Rect", {
-    position: new Vector2(30, 0),
+    position: new Vector2(30, 10),
     width: 30,
     height: 30,
     backgroundColor: "red"
@@ -17,15 +18,16 @@ const box = World.createObject("Rect", {
     backgroundColor: "blue"
 });
 
-const FRICTION = 0.98;
-
-let velX = 0;
-let velY = 0;
-let speed = 2;
 let keysPressed = {};
 
 player.onTouched.Connect(otherElement => {
-    console.log("hit");
+    console.log("hit")
+    otherElement.setProperty("backgroundColor", "green")
+});
+
+player.onTouchEnded.Connect(lastTouched => {
+    console.log("stopped hitting")
+    lastTouched.setProperty("backgroundColor", "blue")
 });
 
 InputService.onInput.Connect(key => {
@@ -36,12 +38,17 @@ InputService.onInputEnded.Connect(key => {
     delete keysPressed[key];
 });
 
+const FRICTION = 0.98;
+
+let velX = 0;
+let velY = 0;
+let speed = 2;
+
 setInterval(function() {
     if (player.position.x < box.position.x + box.width &&
     player.position.x + player.width > box.position.x &&
     player.position.y < box.position.y + box.height &&
     player.position.y + player.height > box.position.y) {
-        box.setProperty("backgroundColor", "green")
     } else {
         box.setProperty("backgroundColor", "blue")
     }
@@ -82,10 +89,6 @@ function updateMovement() {
     for (let i = 0; i === 1; i += 0.01) {
         player.position.lerp(vec, i);
     }
-
-    //player.position.y += velY;
-    //player.position.x += velX;
-    
 }
 updateMovement();
     

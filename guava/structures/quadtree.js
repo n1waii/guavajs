@@ -22,13 +22,13 @@ class Quad {
         // edge cases
         console.assert(node !== null, "Argument 1 is null expected node object");
 
-        if (!this.inBoundary(node.pos)) return;
+        if (!this.inBoundary(node.pos)) return console.log("not in boundary");
 
         if (Math.abs(this.topLeft[0] - this.bottomRight[0]) <= 1 
         && Math.abs(this.topLeft[1] - this.bottomRight[1]) <= 1) { 
             if (this.node === null) { 
                 this.node = node; 
-                console.log(node);
+                console.log("insereted");
             }
             return [this.topLeft, this.bottomRight]; 
         } 
@@ -36,8 +36,10 @@ class Quad {
         // subdivide further
         // left half
         if ((this.topLeft[0] + this.bottomRight[0] / 2) >= node.pos[0]) {  
+            console.log('in left')
             // top left
             if ((this.topLeft[1] + this.bottomRight[1]) / 2 >= node.pos[1]) { 
+                console.log('in top left')
                 if (this.trees.topLeftTree === null) {
                     this.trees.topLeftTree = new Quad( 
                         [this.topLeft[0], this.topLeft[1]],
@@ -47,8 +49,6 @@ class Quad {
                         ]
                     ); 
                    this.trees.topLeftTree.insert(node); 
-                   return [this.trees.topLeftTree.topLeft, this.trees.topLeftTree.bottomRight]; 
-
                 }
             // bottom left  
             } else {
@@ -61,7 +61,6 @@ class Quad {
                         ]
                     ); 
                    this.trees.bottomLeftTree.insert(node); 
-                   return [this.trees.bottomLeftTree.topLeft, this.trees.bottomLeftTree.bottomRight]; 
                 }
             }
         // right half
@@ -77,20 +76,18 @@ class Quad {
                         ]
                     ); 
                    this.trees.topRightTree.insert(node); 
-                   return [this.trees.topRightTree.topLeft, this.trees.topRightTree.bottomRight]; 
                 }
             // bottom right  
             } else {
                 if (this.trees.bottomRightTree === null) {
                     this.trees.bottomRightTree = new Quad( 
-                        [this.topLeft[0], (this.topLeft[1]+this.bottomRight[1])/2], 
+                        [(this.topLeft[0]+this.bottomRight[0])/2, (this.topLeft[1]+this.bottomRight[1])/2], 
                         [
-                            (this.topLeft[0] + this.bottomRight[0]) / 2, 
+                            this.bottomRight[0], 
                             this.bottomRight[1]
                         ]
                     ); 
                    this.trees.bottomRightTree.insert(node); 
-                   return [this.trees.bottomRightTree.topLeft, this.trees.bottomRightTree.bottomRight]; 
                 }
             }
         }
@@ -104,24 +101,24 @@ class Quad {
             // top left
             if ((this.topLeft[1] + this.bottomRight[1]) / 2 >= p[1]) { 
                 if (this.trees.topLeftTree === null) return null;
-                return this.trees.topLeftTree.getNodeFromPoint(p); 
+                return this.trees.topLeftTree.search(p); 
             } 
             // bottom left 
             else { 
                 if (this.trees.bottomLeftTree === null) return null; 
-                return this.trees.bottomLeftTree.getNodeFromPoint(p); 
+                return this.trees.bottomLeftTree.search(p); 
             } 
         } 
         else { 
             // top right 
             if ((this.topLeft[1] + this.bottomRight[1]) / 2 >= p[1]) { 
                 if (this.trees.topRightTree === null) return null; 
-                return this.trees.topRightTree.getNodeFromPoint(p); 
+                return this.trees.topRightTree.search(p); 
             }
             // bottom right 
             else { 
                 if (this.trees.bottomRightTree === null) return null; 
-                return this.trees.bottomRightTree.getNodeFromPoint(p); 
+                return this.trees.bottomRightTree.search(p); 
             }
         } 
     }
