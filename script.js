@@ -42,11 +42,20 @@ function createTargets() {
 createTargets();
 
 const player = World.createObject("Rect", {
-    position: new Vector2(WIDTH/2-80/2, HEIGHT-100),
+    position: new Vector2(WIDTH/2-80/2, HEIGHT-50),
     width: 80,
     height: 20,
     backgroundColor: "red"
 });
+
+const ball = World.createObject("Rect", {
+    position: new Vector2(WIDTH/2-80/2, HEIGHT-100),
+    width: 20,
+    height: 20,
+    borderRadius: 12,
+    backgroundColor: "gray"
+});
+
 
 let keysPressed = {};
 
@@ -66,45 +75,31 @@ InputService.onInputEnded.Connect(key => {
     delete keysPressed[key];
 });
 
-const FRICTION = 0.98;
+const FRICTION = 0.95;
 
-let velX = 0;
-let velY = 0;
-let speed = 2;
-
+let vel = 0;
+let speed = 3;
 
 function updateMovement() {
     requestAnimationFrame(updateMovement);
 
-    if (keysPressed[Enums.KeyCode.W]) {
-        if (velY > -speed) {
-            velY--;
-        }
-    }
-    
-    if (keysPressed[Enums.KeyCode.S]) {
-        if (velY < speed) {
-            velY++;
-        }
-    }
     if (keysPressed[Enums.KeyCode.A]) {
-        if (velX > -speed) {
-            velX--;
+        if (vel > -speed) {
+            vel--;
+        }
+    } else if (keysPressed[Enums.KeyCode.D]) {
+        if (vel < speed) {
+            vel++;
         }
     }
-    if (keysPressed[Enums.KeyCode.D]) {
-        if (velX < speed) {
-            velX++;
-        }
-    }
-    
-    velY *= FRICTION;
-    velX *= FRICTION;
-    let vec = new Vector2(
-        player.position.x += velX,
-        player.position.y += velY
-    );
 
+    vel *= FRICTION;
+
+    let vec = new Vector2(
+        player.position.x += vel,
+        player.position.y
+    );
+    
     for (let i = 0; i === 1; i += 0.01) {
         player.position.lerp(vec, i);
     }

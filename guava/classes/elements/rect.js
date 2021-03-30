@@ -7,7 +7,6 @@ export default class Rect extends RectComponent(Element) {
         this.border = "none";
         this.borderSize = 1;
         this.borderColor = "black";
-        this.borderRadius = 0;
     }   
 };
 

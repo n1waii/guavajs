@@ -21,7 +21,8 @@ export default class Element {
         this.height = 50;
         this.anchorPoint = [0, 0];
         this.backgroundColor = "red";
-        this.name = "Element"
+        this.borderRadius = 0;
+        this.name = "Element";
         this.onTouched = new TouchedEvent(this);
         this.onTouchEnded = new TouchEndedEvent(this);
         this.#events = [this.onTouched, this.onTouchEnded]

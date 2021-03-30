@@ -19,18 +19,20 @@ function checkCollisions() {
     for (const element of CollisionListeners) {
         for (const otherElement of ElementsTree) {
             if (otherElement === element) { continue };
-            if (collidingWith[otherElement]) {
+            if (collidingWith[element] && collidingWith[element] !== element) {
                 console.log('already')
-                notifyEvent(collidingWith[otherElement].onTouched, otherElement);
+                notifyEvent(element.onTouched, collidingWith[element]);
                 continue;
             };
             if (isColliding(element, otherElement)) {
                 collidingWith[element] = otherElement;
                 collidingWith[otherElement] = element;
                 notifyEvent(element.onTouched, otherElement);
+                
             } else {
                 if (lastCollided[element]) {
                     notifyEvent(element.onTouchEnded, lastCollided[element]);
+                    break;
                 }
             }
         }
@@ -56,7 +58,7 @@ function reset(world) {
 
 function run(world) {
     //ElementsTree = new Quad([0, 0], [world.canvas.width, world.canvas.height]);
-    ElementsTree = world.getCurrentScene().getObjects();
+    ElementsTree = [...world.getCurrentScene().getObjects()];
     checkCollisions();
 }
 
