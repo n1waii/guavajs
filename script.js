@@ -56,6 +56,27 @@ const ball = World.createObject("Rect", {
     backgroundColor: "gray"
 });
 
+let ballVelX = 0;
+let ballVelY = 0;
+function updateBall() {
+    requestAnimationFrame(updateBall);
+    let vec = new Vector2(
+        ball.position.x += ballVelX,
+        ball.position.y += ballVelY
+    );
+    
+    for (let i = 0; i === 1; i += 0.01) {
+        ball.position.lerp(vec, i);
+    }
+}
+updateBall();
+
+ball.onTouched:Connect(otherElement => {
+    if (otherElement === player) {
+        let d = (ball.position.y - player.position.y) 
+
+    }
+})
 
 let keysPressed = {};
 
@@ -104,5 +125,7 @@ function updateMovement() {
         player.position.lerp(vec, i);
     }
 }
+
+
 updateMovement();
     

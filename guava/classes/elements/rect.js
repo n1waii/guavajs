@@ -1,12 +1,9 @@
 import Element from "./element.js";
-import RectComponent from "../../components/elements/rectComponent.js";
 
-export default class Rect extends RectComponent(Element) {
+export default class Rect extends Element {
     constructor(...args) {
         super(...args)
-        this.border = "none";
-        this.borderSize = 1;
-        this.borderColor = "black";
+    
     }   
 };
 
