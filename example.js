@@ -1,5 +1,6 @@
+import Scene from "./guava/classes/world/scene.js";
 import { Guava, Enums, Vector2 } from "./guava/guava.js";
-import { Quad, Node } from "./guava/structures/quadtree.js";
+//import { Quad, Node } from "./guava/structures/quadtree.js";
 
 const WIDTH = 700;
 const HEIGHT = 400;
@@ -57,13 +58,20 @@ const ball = World.createObject("Rect", {
 });
 
 let ballVelX = 0;
-let ballVelY = 0;
+let ballVelY = -1;
 function updateBall() {
     requestAnimationFrame(updateBall);
     let vec = new Vector2(
         ball.position.x += ballVelX,
         ball.position.y += ballVelY
     );
+
+    if (ball.position.x <= 0 || ball.position.x + ball.width >= WIDTH) {
+        ballVelX = -ballVelX;
+    }
+    if (ball.position.y <= 0 || ball.position.y + ball.height >= HEIGHT) {
+        ballVelY = -ballVelY;
+    }
     
     for (let i = 0; i === 1; i += 0.01) {
         ball.position.lerp(vec, i);
@@ -71,21 +79,37 @@ function updateBall() {
 }
 updateBall();
 
-ball.onTouched:Connect(otherElement => {
-    if (otherElement === player) {
-        let d = (ball.position.y - player.position.y) 
+let lastTouched = null;
 
+ball.onTouched.Connect(otherElement => {
+    if (lastTouched == otherElement) {
+        return
+    }
+    lastTouched = otherElement;
+
+    let xDiff = (ball.position.x + ball.width/2) - (otherElement.position.x + otherElement.width/2)
+    let yDiff = (ball.position.y + ball.height/2) - (otherElement.position.y + otherElement.height/2)
+    
+    let angle = Math.atan2(yDiff, xDiff);
+    let speed = Math.sqrt(ballVelX * ballVelX + ballVelY * ballVelY) || 2;
+    
+    ballVelX = Math.cos(angle) * speed;
+    ballVelY = Math.sin(angle) * speed;
+
+    if (otherElement.name === "targetBox") {
+        World.getCurrentScene().removeObject(otherElement);
     }
 })
+
 
 let keysPressed = {};
 
 player.onTouched.Connect(otherElement => {
-    otherElement.setProperty("backgroundColor", "green")
+    // otherElement.setProperty("backgroundColor", "green");
 });
 
 player.onTouchEnded.Connect(lastTouched => {
-    lastTouched.setProperty("backgroundColor", "blue")
+    // lastTouched.setProperty("backgroundColor", "blue");
 });
 
 InputService.onInput.Connect(key => {

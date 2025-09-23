@@ -14,16 +14,16 @@ const SpriteComponent = superclass => class extends SpriteComponent {
 
     addCostume(img) {
         this.costumes.append(img);
-    },
+    }
 
     nextCostume() {
         this.costumeState = ((this.costumeState + 1) > this.costumes.length-1) ? 0 : this.costumeState + 1;
         this.switchCostume(costumeState);
-    },
+    }
 
     getCurrentCustome() {
         return this.costumes[this.costumeState];
-    },
+    }
 
     getCustomeState() {
         return this.costumeState;

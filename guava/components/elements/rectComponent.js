@@ -1,3 +1,5 @@
+import { TouchedEvent, TouchEndedEvent } from "../events/touchedevent.js";
+
 const RectComponent = superclass => class extends superclass {
     setBorder(b, bSize, bColor, bRadius) {
         this.border = b || this.border;
