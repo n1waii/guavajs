@@ -119,8 +119,8 @@ world.addObject(player);
 
 // 4. Handle keyboard input to move the player
 InputService.onInput.Connect((input) => {
-  if (input.key === 'ArrowLeft') player.velocityX = -300;
-  if (input.key === 'ArrowRight') player.velocityX = 300;
+  if (input.key === 'A') player.velocityX = -300;
+  if (input.key === 'D') player.velocityX = 300;
 });
 InputService.onInputEnded.Connect((input) => {
   if (input.key === 'ArrowLeft' || input.key === 'ArrowRight') player.velocityX = 0;
