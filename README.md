@@ -5,6 +5,9 @@
 
 ---
 
+<img src="./example.gif" alt="Breakout game example" width="400"/>
+Breakout game example(source code in example.js)
+
 ## Table of Contents
 1. [Purpose](#purpose)
 2. [Features](#features)
