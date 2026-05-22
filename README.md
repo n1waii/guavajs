@@ -3,6 +3,8 @@
 
 **Guava.js** is a lightweight, extensible 2D game engine for JavaScript. It provides a simple API for creating interactive games and simulations with support for object management, collision detection, input handling, and event-driven programming.
 
+**Disclaimer: This project is about 5 years old. I only did some minor adjustments to it recently. Nonetheless, it isn't a *terrible* solution.**
+
 ---
 
 <img src="./example.gif" alt="Breakout game example" width="400"/>
